@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
@@ -7,7 +7,7 @@ import { InputCustom } from "@/components/InputCustom";
 import InputPhoneCustom from "@/components/InputPhoneCustom";
 import Image from "next/image";
 
-export default function Form() {
+function FormContent() {
   const router = useRouter(); 
   const searchParams = useSearchParams();
   const queryLeadId = searchParams.get('leadId') ?? localStorage.getItem("leadId");
@@ -169,5 +169,13 @@ export default function Form() {
       </div>
       <Footer isFixed={true} />
     </>
+  );
+}
+
+export default function Form() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <FormContent />
+    </Suspense>
   );
 }

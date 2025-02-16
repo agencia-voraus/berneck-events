@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation"; // Importando useRouter para redirecionamento
 import { LogOut } from "lucide-react";
-import Header from "@/components/Header";
 import { Navbar } from "@/components/Navbar";
 import { LinkButtonCustom } from "@/components/LinkButtonCustom";
 import AuthenticatedLayout from "@/components/AuthenticatedLogin";

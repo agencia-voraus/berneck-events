@@ -3,37 +3,23 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function PATCH(
-  req: Request,
-  context: { params: { id: string } }
-) {
+export async function PATCH(req: Request) {
   try {
-    const { params } = context;
-    const giftId = params.id;
+    const url = new URL(req.url);
+    const giftId = url.pathname.split("/").pop(); 
 
     if (!giftId) {
-      return NextResponse.json(
-        { message: "ID do Gift é obrigatório" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "ID do Gift é obrigatório" }, { status: 400 });
     }
 
-    const existingGift = await prisma.gift.findUnique({
-      where: { id: giftId },
-    });
+    const existingGift = await prisma.gift.findUnique({ where: { id: giftId } });
 
     if (!existingGift) {
-      return NextResponse.json(
-        { message: "Gift não encontrado" },
-        { status: 404 }
-      );
+      return NextResponse.json({ message: "Gift não encontrado" }, { status: 404 });
     }
 
     if (existingGift.hasClaimed) {
-      return NextResponse.json(
-        { message: "O Gift já foi reivindicado" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "O Gift já foi reivindicado" }, { status: 400 });
     }
 
     const updatedGift = await prisma.gift.update({
@@ -47,10 +33,6 @@ export async function PATCH(
     return NextResponse.json(updatedGift, { status: 200 });
   } catch (error) {
     console.error("Erro ao atualizar o gift:", error);
-
-    return NextResponse.json(
-      { message: "Erro interno do servidor" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Erro interno do servidor" }, { status: 500 });
   }
 }

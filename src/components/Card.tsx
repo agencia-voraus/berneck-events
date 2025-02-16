@@ -8,7 +8,7 @@ type CardProps = {
   codigo: string;
   retirado: boolean | null;
   simCheckboxProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  simLabel?: string; // Nova prop para personalizar o texto do checkbox "Sim"
+  simLabel?: string; 
 };
 
 const Card: React.FC<CardProps> = ({ 
@@ -28,7 +28,7 @@ const Card: React.FC<CardProps> = ({
     setShowModal(false);
   };
 
-  const handleRadioChange = (value: boolean) => {
+  const handleRadioChange = () => {
     if (localRetirado === null) {
       setShowModal(true);
     }
@@ -64,8 +64,8 @@ const Card: React.FC<CardProps> = ({
                 className="hidden"
                 checked={localRetirado === true}
                 disabled={localRetirado === true}
-                onChange={() => handleRadioChange(true)}
-                {...simCheckboxProps} // Spread das props adicionais aqui
+                onChange={() => handleRadioChange()}
+                {...simCheckboxProps}
               />
               <div className={`w-6 h-6 flex items-center justify-center border rounded-lg ${localRetirado === true ? "bg-accent-green text-white" : "border-gray-600"}`}>
                 {localRetirado === true ? "X" : ""}
@@ -79,7 +79,7 @@ const Card: React.FC<CardProps> = ({
                 className="hidden"
                 checked={localRetirado === false}
                 disabled={localRetirado !== null}
-                onChange={() => handleRadioChange(false)}
+                onChange={() => handleRadioChange()}
               />
               <div className={`w-6 h-6 flex items-center justify-center border rounded-lg ${localRetirado === false ? "bg-accent-green text-white" : "border-gray-600"}`}>
                 {localRetirado === false ? "X" : ""}

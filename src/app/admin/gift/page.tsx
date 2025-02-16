@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Loader } from "lucide-react";
 import Card from "@/components/Card";
-import Header from "@/components/Header";
 import { Navbar } from "@/components/Navbar";
 import { Sliders } from "lucide-react";
 import { toast } from "react-toastify";
@@ -27,6 +26,7 @@ const GiftList = () => {
         setGifts(data.gifts);
         setTotalPages(data.totalPages);
       } catch (error) {
+        console.log(error);
         toast.error("Erro ao buscar brindes: Não foi possível carregar os brindes.");
       } finally {
         setLoading(false);

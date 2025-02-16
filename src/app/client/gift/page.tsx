@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGift } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +12,7 @@ type Gift = {
   code: string;
 };
 
-export default function BrindeScreen() {
+function BrindeContent() {
   const [gift, setGift] = useState<Gift | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -87,5 +87,13 @@ export default function BrindeScreen() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function BrindeScreen() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Carregando...</div>}>
+      <BrindeContent />
+    </Suspense>
   );
 }

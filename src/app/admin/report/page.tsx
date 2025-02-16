@@ -9,7 +9,6 @@ import { LinkButton } from "@/components/LinkButton";
 import AuthenticatedLayout from "@/components/AuthenticatedLogin";
 
 const Report = () => {
-  const [filtro, setFiltro] = useState<"todos" | "entregues" | "nao-entregues">("todos");
   const [totalGenerated, setTotalGenerated] = useState(0); 
   const [totalClaimed, setTotalClaimed] = useState(0); 
   const [loading, setLoading] = useState(true);

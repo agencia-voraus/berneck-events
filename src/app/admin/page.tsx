@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { getCookie, setCookie } from "cookies-next"; 
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { InputCustom } from "@/components/InputCustom";

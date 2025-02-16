@@ -1,5 +1,5 @@
-import clsx from "clsx";
+import clsx, { ClassValue } from "clsx";
 
-export function cn(...classes) {
+export function cn(...classes: ClassValue[]) {
   return clsx(...classes);
 }

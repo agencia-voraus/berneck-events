@@ -1,11 +1,11 @@
-"use client"
-import { useState, useEffect } from "react";
+"use client";
+import { useState, useEffect, Suspense } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGift, faMapMarkerAlt, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faGift, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { Footer } from "@/components/Footer";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function Gift() {
+function GiftContent() {
   const [code, setCode] = useState<string | null>(null);
   const [hasClaimed, setHasClaimed] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -121,7 +121,7 @@ export default function Gift() {
           </p>
           <div className="mt-8 md:mt-16 flex flex-col items-center transition-opacity duration-500 opacity-100">
             <button
-              onClick={() => router.push("http://localhost:3001/client/thank-you/confirmation")}
+              onClick={() => router.push("/client/thank-you/confirmation")}
               className="px-12 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-300 flex items-center justify-center"
             >
               <FontAwesomeIcon icon={faMapMarkerAlt} size="lg" />
@@ -132,5 +132,28 @@ export default function Gift() {
       </div>
       <Footer />
     </>
+  );
+}
+
+export default function Gift() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
+        <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-accent-green"></div>
+        <img 
+          src="/logo.png" 
+          alt="Logo"
+          className="w-32 md:w-40 mt-8" 
+        />
+        <p className="mt-4 text-gray-800 text-lg font-semibold">
+          Carregando seu gift...
+        </p>
+        <p className="mt-2 text-gray-600 text-sm">
+          Isso pode levar alguns segundos
+        </p>
+      </div>
+    }>
+      <GiftContent />
+    </Suspense>
   );
 }

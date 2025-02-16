@@ -15,7 +15,6 @@ export const InputPhoneCustom: React.FC<InputPhoneCustomProps> = ({
   value = "",
   onChange,
   className = "",
-  name = ""
 }) => {
   return (
     <div className={`flex flex-col w-full max-w-md ${className}`}>
@@ -28,7 +27,7 @@ export const InputPhoneCustom: React.FC<InputPhoneCustomProps> = ({
           buttonClass="!border-none !bg-transparent"
           dropdownClass="!bg-white !border !shadow-lg"
           enableSearch={true}
-          value={value} // aqui usa diretamente o valor da prop
+          value={value}
           autoFormat={true}
           onChange={(phone, country) => {
             if (onChange) onChange(phone, country as CountryData);
