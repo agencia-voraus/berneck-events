@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  fullName      String?  @db.VarChar(255)  
+  jobTitle      String?  @db.VarChar(255)  
+  birthDate     DateTime?                 
+  phone         String? 
+  zipCode       String?       
+  street        String?  @db.VarChar(255) 
+  number        Int?                      
+  complement    String?  @db.VarChar(255)  
+  state         String?  @db.Char(2)       
+  city          String?  @db.VarChar(255)  
+  createdAt     DateTime @default(now())
+  status        Boolean  @default(false)   
+
+  gifts         Gift[]
+}
+model Gift {
+  id              String            @id @default(uuid())
+  leadId          String?           @unique 
+  lead            Lead?             @relation(fields: [leadId], references: [id])
+  code            String?           @unique 
+  hasClaimed      Boolean           @default(false)
+  claimedAt       DateTime?         
+  isPhysical      Boolean           @default(false) 
+  createdAt       DateTime          @default(now())
+
+  giftRedemptions GiftRedemption[]
+}
+
+model GiftRedemption {
+  id            String  @id @default(uuid())
+  giftId        String  @unique
+  gift          Gift    @relation(fields: [giftId], references: [id])
+  redeemed      Boolean @default(false)
+  redeemedAt    DateTime?
+
+  createdAt     DateTime @default(now())
+}
+
+model User {
+  id            String  @id @default(uuid())
+  name          String
+  email         String  @unique
+  passwordHash  String
+  role          Role    @default(USER)
+  createdAt     DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  COLLABORATOR
+  USER
+}
+
+model GiftStock {
+  id              String   @id @default(uuid())
+  totalAvailable  Int    
+  redeemedCount   Int      @default(0)
+  isActive        Boolean  @default(true) 
+  isFinished      Boolean  @default(false) 
+  createdAt       DateTime @default(now())
+}
