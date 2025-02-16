@@ -34,7 +34,7 @@ export default function Login() {
         throw new Error(data.error || "Erro ao fazer login");
       }
 
-      router.push("/admin/menu"); 
+      router.replace("/admin/menu");
 
     } catch (err: any) {
       setError(err.message);
