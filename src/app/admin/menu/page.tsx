@@ -6,6 +6,7 @@ import { LinkButton } from "@/components/LinkButton";
 import { Navbar } from "@/components/Navbar";
 import { Check, CirclePause, QrCodeIcon, ClipboardPenLine, GitCompareArrows } from "lucide-react";
 import { LinkCustom } from "@/components/LinkCustom";
+import Image from "next/image";
 
 const Menu = () => {
   const [userName, setUserName] = useState<string | null>(null);
@@ -103,7 +104,13 @@ const Menu = () => {
       <div className="w-full max-w-md mx-auto text-center mt-5">
         <h1 className="text-2xl font-bold text-border-primary mb-3">Berneck na Feira 2025</h1>
         <div className="w-full rounded-lg p-3 overflow-hidden">
-          <img src="/banner.jpg" alt="Banner Expo Horizontes Berneck" className="w-full h-auto object-cover rounded-xl" />
+          <Image
+            src="/banner.jpg"
+            alt="Banner Expo Horizontes Berneck"
+            width={1200}
+            height={400}
+            className="w-full h-auto object-cover rounded-xl"
+          />
         </div>
       </div>
 

@@ -9,10 +9,10 @@ interface ButtonCustomProps {
   
   export function ButtonCustom({ children, className, onClick, disabled = false, type = 'button', variant = 'default' }: ButtonCustomProps) {
     const variantClasses = {
-      default: "bg-green-800 text-white hover:bg-green-700",
-      outline: "border border-green-800 text-green-800 bg-transparent hover:bg-green-100",
-      ghost: "text-green-800 bg-transparent hover:bg-green-100",
-      link: "text-green-800 underline hover:text-green-700"
+      default: "bg-accent-green text-white hover:bg-green-700",
+      outline: "border border-accent-green text-accent-green bg-transparent hover:bg-green-100",
+      ghost: "text-accent-green bg-transparent hover:bg-green-100",
+      link: "text-accent-green underline hover:text-green-700"
     };
   
     return (

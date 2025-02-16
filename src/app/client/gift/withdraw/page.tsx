@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGift, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { Footer } from "@/components/Footer";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 function GiftContent() {
   const [code, setCode] = useState<string | null>(null);
@@ -32,9 +33,9 @@ function GiftContent() {
         setCode(data.code);
         setHasClaimed(data.hasClaimed);
         setError(null);
-      } catch (error: any) {
-        console.error(error);
-        setError(error.message || "Erro ao carregar o gift. Tente novamente mais tarde.");
+      } catch (error: unknown) {
+        const errorMessage: string = error instanceof Error ? error.message : "Erro ao carregar o gift. Tente novamente mais tarde.";
+        setError(errorMessage);
       } finally {
         setIsFadingOut(true);
         setTimeout(() => {
@@ -56,9 +57,11 @@ function GiftContent() {
     return (
       <div className={`flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-green-50 ${isFadingOut ? 'fade-out' : ''}`}>
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-accent-green transition-opacity duration-500 opacity-100"></div>
-        <img 
+        <Image 
           src="/logo.png" 
           alt="Logo"
+          width={160} 
+          height={160} 
           className="w-32 md:w-40 mt-8 transition-opacity duration-500 opacity-100" 
         />
         <p className="mt-4 text-gray-800 text-lg font-semibold transition-opacity duration-500 opacity-100">
@@ -74,10 +77,12 @@ function GiftContent() {
   if (error || !code) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <img 
-          src="/logo.png" 
+        <Image
+          src="/logo.png"
           alt="Logo"
-          className="w-32 md:w-40 mt-8 transition-opacity duration-500 opacity-100" 
+          width={160}
+          height={160}
+          className="w-32 md:w-40 mt-8 transition-opacity duration-500 opacity-100"
         />
         <div className="bg-white rounded-2xl p-6 text-center w-full max-w-xs md:max-w-sm transition-all duration-500 opacity-100 transform translate-y-0">
           <h2 className="text-2xl font-semibold text-gray-800">Erro</h2>
@@ -98,9 +103,12 @@ function GiftContent() {
   return (
     <>
       <div className="w-full">
-        <img 
-          src="/banner.jpg" 
-          alt="Banner Expo Revestir 2025" 
+      <Image
+          src="/banner.jpg"
+          alt="Banner Expo Revestir 2025"
+          layout="responsive"
+          width={1920}
+          height={512}
           className="w-full h-48 md:h-64 object-cover transition-opacity duration-500 opacity-100"
         />
       </div>
@@ -140,11 +148,13 @@ export default function Gift() {
     <Suspense fallback={
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-green-50">
         <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-accent-green"></div>
-        <img 
-          src="/logo.png" 
-          alt="Logo"
-          className="w-32 md:w-40 mt-8" 
-        />
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={160}
+            height={160}
+            className="w-32 md:w-40 mt-8"
+          />
         <p className="mt-4 text-gray-800 text-lg font-semibold">
           Carregando seu gift...
         </p>

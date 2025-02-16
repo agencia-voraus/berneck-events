@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/Button";
 import { Footer } from "@/components/Footer";
 import { InputCustom } from "@/components/InputCustom";
+import Image from "next/image";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -36,8 +37,12 @@ export default function Login() {
 
       router.replace("/admin/menu");
 
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -45,8 +50,13 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
-      <img src="/logo.png" alt="Berneck Logo" className="max-w-60 mb-8" />
-
+      <Image
+          src="/logo.png"
+          alt="Berneck Logo"
+          width={240}  
+          height={100} 
+          className="max-w-60 mb-8"
+        />
       <div className="w-full max-w-sm">
         {error && <p className="text-red-500 text-center mb-3">{error}</p>}
 

@@ -161,7 +161,15 @@ function FormContent() {
             </div>
             <br />
             <div className="flex justify-between mt-5">
-              <Button className="!bg-gray-400 !hover:bg-gray-500 p-3 rounded-lg w-full mr-5">Voltar</Button>
+              <Button
+                className="!bg-gray-400 !hover:bg-gray-500 p-3 rounded-lg w-full mr-5"
+                onClick={() => {
+                  localStorage.clear();
+                  router.push("/client");
+                }}
+              >
+                Voltar
+              </Button>              
               <Button type="submit" className="p-3 rounded-lg w-full">Finalizar</Button>
             </div>
           </form>

@@ -1,24 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { Navbar } from "@/components/Navbar";
 import AuthenticatedLayout from "@/components/AuthenticatedLogin";
 
 const Validator = () => {
-  const [userInitial, setUserInitial] = useState<string | null>(null);
   const [fullName, setFullName] = useState<string | null>(null);
   const [code, setCode] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [hasClaimed, setHasClaimed] = useState<boolean>(false);
   const [isReceived, setIsReceived] = useState<boolean>(false);
   const [giftId, setGiftId] = useState<string | null>(null);
   const [claimedAt, setClaimedAt] = useState<string | null>(null);
-
-  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -26,25 +21,6 @@ const Validator = () => {
       setCode(value);
     }
   };
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch("/api/auth/me", { credentials: "include" });
-        const data = await response.json();
-        if (response.ok) {
-          setUserName(data.user.name);
-          setUserInitial(data.user.name.charAt(0).toUpperCase());
-        } else {
-          router.push("/admin");
-        }
-      } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
-        router.push("/admin");
-      }
-    };
-    fetchUser();
-  }, [router]);
 
   const handleValidate = async () => {
     if (code.length === 6) {

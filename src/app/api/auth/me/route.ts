@@ -1,11 +1,11 @@
 "use server"
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
 const SECRET = process.env.NEXTAUTH_SECRET as string;
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     }
 
     const decoded = jwt.verify(token, SECRET) as { name: string };
-    console.log(decoded);
+
     if (!decoded.name) {
       return NextResponse.json({ error: "Usuário inválido" }, { status: 401 });
     }
@@ -22,6 +22,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ user: { name: decoded.name } });
 
   } catch (error) {
-    return NextResponse.json({ error: "Token inválido ou expirado" }, { status: 401 });
+    
+    return NextResponse.json({ error: `Token inválido ou expirado ${error || ""}` }, { status: 401 });
   }
 }

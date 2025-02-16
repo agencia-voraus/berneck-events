@@ -1,7 +1,6 @@
 "use server";
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { cookies } from "next/headers";
 
 const prisma = new PrismaClient();
 
@@ -200,20 +199,36 @@ export async function PATCH(req: Request) {
     });
 
     let giftType: "physical" | "digital" = "digital";
-
-    if (stock && stock.totalAvailable > stock.redeemedCount) {
+  
+    if (stock && (stock.totalAvailable > stock.redeemedCount)) {
       giftType = "physical";
     }
 
     if (giftType === "digital") {
-      return NextResponse.json({ leadId: lead.id, giftId: null });
+      const digitalGift = await prisma.gift.create({
+        data: {
+          leadId: lead.id,
+          code: "", 
+          hasClaimed: false,
+          isPhysical: false,
+        },
+      });
+      return NextResponse.json({ leadId: lead.id, giftId: digitalGift.id });
     }
 
     const uniqueCode = await generateUniqueCode();
 
     const result = await prisma.$transaction(async (tx) => {
       if (!stock) {
-        throw new Error("Estoque não encontrado, abortando transação.");
+        const digitalGift = await tx.gift.create({
+          data: {
+            leadId: lead.id,
+            code: "", 
+            hasClaimed: false,
+            isPhysical: false,
+          },
+        });
+        return digitalGift;
       }
 
       await tx.giftStock.update({
