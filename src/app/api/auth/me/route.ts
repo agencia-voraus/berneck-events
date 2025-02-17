@@ -13,13 +13,13 @@ export async function GET() {
       return NextResponse.json({ error: "Não autenticado" }, { status: 401 });
     }
 
-    const decoded = jwt.verify(token, SECRET) as { name: string };
+    const decoded = jwt.verify(token, SECRET) as { name: string, role: string };
 
     if (!decoded.name) {
       return NextResponse.json({ error: "Usuário inválido" }, { status: 401 });
     }
 
-    return NextResponse.json({ user: { name: decoded.name } });
+    return NextResponse.json({ user: { name: decoded.name, role: decoded.role } });
 
   } catch (error) {
     

@@ -16,6 +16,7 @@ const Menu = () => {
   const [redeemedCount, setRedeemedCount] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newTotalAvailable, setNewTotalAvailable] = useState<number>(100);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -26,6 +27,12 @@ const Menu = () => {
         if (response.ok) {
           setUserName(data.user.name);
           setUserInitial(data.user.name.charAt(0).toUpperCase());
+          console.log(data.user.role);
+          if (data.user.role == 'ADMIN') {
+            setIsAdmin(true);
+          } else {
+            setIsAdmin(false);
+          }
         } else {
           router.push("/admin");
         }
@@ -40,14 +47,12 @@ const Menu = () => {
         const response = await fetch("/api/status");
 
         if (!response.ok) {
-          console.log(response)
           throw new Error(`Erro na resposta do servidor: ${response.status}`);
         }
 
         const data = await response.json();
 
         if (data && typeof data.isActive === "boolean") {
-          console.log(data)
           setIsActive(data.isActive);
           setTotalAvailable(data.totalAvailable);
           setRedeemedCount(data.redeemedCount);
@@ -131,11 +136,13 @@ const Menu = () => {
           Icon={() => <QrCodeIcon />} 
         />
 
-        <LinkCustom
-          title={!isActive ? "Habilitar distribuição de códigos" : "Desabilitar distribuição de códigos"}
-          Icon={!isActive ? Check : CirclePause}
-          onClick={() => setIsModalOpen(true)}
-        />
+        {isAdmin && (
+            <LinkCustom
+              title={!isActive ? "Habilitar distribuição de códigos" : "Desabilitar distribuição de códigos"}
+              Icon={!isActive ? Check : CirclePause}
+              onClick={() => setIsModalOpen(true)}
+            />
+        )}
       </div>
 
       <Navbar />
