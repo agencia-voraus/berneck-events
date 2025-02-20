@@ -18,7 +18,6 @@ const Card: React.FC<CardProps> = ({
   codigo, 
   retirado, 
   simCheckboxProps, 
-  simLabel = "Sim" 
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [localRetirado, setLocalRetirado] = useState(retirado);
