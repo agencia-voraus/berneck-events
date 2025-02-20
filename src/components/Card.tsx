@@ -53,35 +53,37 @@ const Card: React.FC<CardProps> = ({
         <div className="w-full">
           <div className="text-xl font-bold mb-2 text-center sm:text-left">Retirou o brinde?</div>
           <div className="flex items-center justify-center sm:justify-start gap-4">
-            <label className={`flex items-center ${localRetirado === true ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
-              <input
-                type="radio"
-                name={`retirado-${codigo}`}
-                className="hidden"
-                checked={localRetirado === true}
-                disabled={localRetirado === true}
-                onChange={handleRadioChange}
-                {...simCheckboxProps}
-              />
-              <div className={`w-6 h-6 flex items-center justify-center border rounded-lg ${localRetirado === true ? "bg-accent-green text-white" : "border-gray-600"}`}>
-                {localRetirado === true ? "X" : ""}
-              </div>
-              <span className="ml-2">{simLabel}</span>
-            </label>
-            <label className={`flex items-center ${localRetirado !== null ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
-              <input
-                type="radio"
-                name={`retirado-${codigo}`}
-                className="hidden"
-                checked={localRetirado === false}
-                disabled={localRetirado !== null}
-                onChange={handleRadioChange}
-              />
-              <div className={`w-6 h-6 flex items-center justify-center border rounded-lg ${localRetirado === false ? "bg-accent-green text-white" : "border-gray-600"}`}>
-                {localRetirado === false ? "X" : ""}
-              </div>
-              <span className="ml-2">Não</span>
-            </label>
+          <label className={`flex items-center ${localRetirado !== null ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+            <input
+              type="radio"
+              name={`retirado-${codigo}`}
+              className="hidden"
+              checked={localRetirado === true}
+              disabled={localRetirado !== null}
+              onChange={handleRadioChange}
+              {...simCheckboxProps}
+            />
+            <div className={`w-6 h-6 flex items-center justify-center border rounded-lg ${localRetirado === true ? "bg-accent-green text-white" : "border-gray-600"}`}>
+              {localRetirado === true ? "X" : ""}
+            </div>
+            <span className="ml-2">Sim</span>
+          </label>
+
+          <label className={`flex items-center ${localRetirado !== null ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+            <input
+              type="radio"
+              name={`retirado-${codigo}`}
+              className="hidden"
+              checked={localRetirado === false}
+              disabled={localRetirado !== null}
+              onChange={handleRadioChange}
+            />
+            <div className={`w-6 h-6 flex items-center justify-center border rounded-lg ${localRetirado === false ? "bg-accent-green text-white" : "border-gray-600"}`}>
+              {localRetirado === false ? "X" : ""}
+            </div>
+            <span className="ml-2">Não</span>
+          </label>
+
           </div>
         </div>
         <div className="bg-accent-green text-white text-center px-6 py-2 rounded-lg">

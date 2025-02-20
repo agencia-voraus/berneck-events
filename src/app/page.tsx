@@ -7,10 +7,10 @@ import { Footer } from "@/components/Footer";
 import { useRouter } from "next/navigation"; // Importe o useRouter
 
 const Menu = () => {
-  const router = useRouter(); // Inicialize o useRouter
+  const router = useRouter(); 
 
   const handleCadastrar = () => {
-    router.push("/client"); // Redireciona para a rota /client
+    router.push("/client");
   };
 
   return (

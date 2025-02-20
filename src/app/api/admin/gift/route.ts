@@ -9,7 +9,6 @@ export async function GET(req: Request) {
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "10");
     const filter = searchParams.get("filter");
-
     const skip = (page - 1) * pageSize;
 
     let where = {};

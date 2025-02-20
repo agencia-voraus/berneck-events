@@ -32,10 +32,16 @@ const GiftList = () => {
 
   useEffect(() => {
     const fetchGifts = async () => {
+      setLoading(true);
+      setGifts([]); 
+      
       try {
         const res = await fetch(`/api/admin/gift?page=${page}&pageSize=${pageSize}&filter=${filtro}`);
         const data = await res.json();
-        setGifts(data.gifts);
+        
+        console.log("Dados recebidos da API:", data.gifts); 
+        
+        setGifts([...data.gifts]);
         setTotalPages(data.totalPages);
       } catch (error) {
         console.log(error);
@@ -44,9 +50,10 @@ const GiftList = () => {
         setLoading(false);
       }
     };
-
+  
     fetchGifts();
   }, [filtro, page]);
+
 
   if (loading) {
     return (
@@ -81,11 +88,28 @@ const GiftList = () => {
             </motion.div>
           )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-auto-fit md:grid-cols-auto-fit lg:grid-cols-auto-fit gap-4 w-full max-w-7xl mx-auto">            {gifts.map((gift: Gift, index) => {              
-              return (
-                <Card key={index} nome={gift.lead.fullName} cargo={gift.lead.jobTitle} cidade={gift.lead.city} codigo={gift.code} retirado={gift.hasClaimed} />
-              )
-            })}
+            <div className="grid grid-cols-1 sm:grid-cols-auto-fit md:grid-cols-auto-fit lg:grid-cols-auto-fit gap-4 w-full max-w-7xl mx-auto">       
+            {gifts.map((gift: Gift, index) => {
+                console.log(`Brinde ${index + 1}:`, {
+                  nome: gift.lead.fullName,
+                  cargo: gift.lead.jobTitle,
+                  cidade: gift.lead.city,
+                  codigo: gift.code,
+                  retirado: gift.hasClaimed
+                });
+
+                return (
+                  <Card 
+                    key={index} 
+                    nome={gift.lead.fullName} 
+                    cargo={gift.lead.jobTitle} 
+                    cidade={gift.lead.city} 
+                    codigo={gift.code} 
+                    retirado={gift.hasClaimed} 
+                  />
+                );
+              })}
+
           </div>
 
           <div  className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
