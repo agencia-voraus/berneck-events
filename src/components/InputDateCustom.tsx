@@ -12,14 +12,17 @@ export function InputDateCustom({ label, className = "", ...rest }: InputDateCus
       <input
         className="w-full p-3 border rounded-lg bg-gray-100 text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 mt-1"
         autoComplete="off"
-        type="text" // Define como texto para evitar o datepicker
-        inputMode="numeric" // Sugerir teclado numérico
-        pattern="\d{4}-\d{2}-\d{2}" // Garante o formato YYYY-MM-DD
+        type="text" 
+        inputMode="numeric" 
+        pattern="\d{4}-\d{2}-\d{2}" 
         placeholder="AAAA-MM-DD"
-        onFocus={(e) => e.preventDefault()} // Impede a abertura do datepicker no mobile
+        onFocus={(e) => {
+          e.preventDefault();
+          e.target.setAttribute('type', 'text'); 
+        }}
         onKeyDown={(e) => {
           if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-            e.preventDefault(); // Evita que setas abram o calendário
+            e.preventDefault(); 
           }
         }}
         {...rest}
