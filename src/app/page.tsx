@@ -10,6 +10,9 @@ const Menu = () => {
   const router = useRouter(); 
 
   const handleCadastrar = () => {
+    localStorage.removeItem("leadId");
+    localStorage.removeItem("formCompleted");
+
     router.push("/client");
   };
 

@@ -198,6 +198,7 @@ export async function PATCH(req: Request) {
       where: { isActive: true, isFinished: false },
     });
 
+
     let giftType: "physical" | "digital" = "digital";
   
     if (stock && (stock.totalAvailable > stock.redeemedCount)) {
@@ -208,11 +209,12 @@ export async function PATCH(req: Request) {
       const digitalGift = await prisma.gift.create({
         data: {
           leadId: lead.id,
-          code: "", 
+          code: null, 
           hasClaimed: false,
           isPhysical: false,
         },
       });
+
       return NextResponse.json({ leadId: lead.id, giftId: digitalGift.id });
     }
 
@@ -223,12 +225,13 @@ export async function PATCH(req: Request) {
         const digitalGift = await tx.gift.create({
           data: {
             leadId: lead.id,
-            code: "", 
+            code: null, 
             hasClaimed: false,
             isPhysical: false,
           },
         });
-        return digitalGift;
+
+        return NextResponse.json({ leadId: lead.id, giftId: digitalGift.id });
       }
 
       await tx.giftStock.update({
@@ -249,7 +252,6 @@ export async function PATCH(req: Request) {
       });
     });
 
-    return NextResponse.json({ leadId: lead.id, giftId: result.id });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Erro interno do servidor" },

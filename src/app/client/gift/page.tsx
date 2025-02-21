@@ -2,7 +2,7 @@
 import { useEffect, useState, Suspense, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGift } from "@fortawesome/free-solid-svg-icons";
+import { faGift, faHome } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { Footer } from "@/components/Footer";
 import Image from "next/image";
@@ -87,6 +87,8 @@ function BrindeContent() {
 
   return (
     <>
+  
+  
       <div className="min-h-screen flex flex-col items-center bg-gray-100">
         <div className="w-full max-h-[600px] overflow-hidden flex justify-center items-center bg-gray-100">
           <Image
@@ -97,37 +99,63 @@ function BrindeContent() {
             className="w-full h-full object-contain"
           />
         </div>
-        
+  
         <div className="flex flex-col items-center mt-6 px-4 text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl text-border-primary font-semibold">Berneck na Expo Revestir 2025</h1>
-          {gift && gift.isPhysical ? (
-            <>
-              <button
-                onClick={() => router.push(`/client/gift/withdraw?leadId=${leadId}`)}
-                className="mt-8 bg-accent-green h-[80px] w-[200px] sm:h-[100px] sm:w-[250px] md:h-[120px] md:w-[300px] rounded-2xl text-white p-3 flex items-center justify-center shadow-md hover:bg-green-700 transition"
-              >
-                <FontAwesomeIcon icon={faGift} className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white" />
-              </button>
-              <p className="mt-4 text-lg sm:text-xl md:text-2xl font-medium text-gray-700 font-bold">Receba seu brinde</p>
-            </>
-          ) : (
-            <>
-            <button
-              onClick={handleDownloadEbook}
-              disabled={ebookDownloaded} 
-              className={`mt-8 h-[80px] w-[200px] sm:h-[100px] sm:w-[250px] md:h-[120px] md:w-[300px] rounded-2xl text-white p-3 flex items-center justify-center shadow-md transition ${
-                ebookDownloaded ? 'bg-gray-400 cursor-not-allowed' : 'bg-accent-green hover:bg-green-700'
-              }`}
-            >
-              <FontAwesomeIcon icon={faPenToSquare} className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white" />
-            </button>
-            <p className="mt-4 text-lg sm:text-xl md:text-2xl font-medium text-gray-700 font-bold">
-              {ebookDownloaded ? 'E-book já baixado' : 'Baixar E-book'}
-            </p>
-          </>
-          )}
-        </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl text-border-primary font-semibold">
+              Berneck na Expo Revestir 2025
+            </h1>
 
+            {gift && gift.isPhysical ? (
+              <>
+                {/* Botão de Receber Brinde */}
+                <button
+                  onClick={() => router.push(`/client/gift/withdraw?leadId=${leadId}`)}
+                  className="mt-8 bg-accent-green h-[80px] w-[200px] sm:h-[100px] sm:w-[250px] md:h-[120px] md:w-[300px] rounded-2xl text-white p-3 flex items-center justify-center shadow-md hover:bg-green-700 transition"
+                >
+                  <FontAwesomeIcon
+                    icon={faGift}
+                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white"
+                  />
+                </button>
+                <p className="mt-4 text-lg sm:text-xl md:text-2xl font-medium text-gray-700 font-bold">
+                  Receba seu brinde
+                </p>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={handleDownloadEbook}
+                  disabled={ebookDownloaded}
+                  className={`mt-8 h-[80px] w-[200px] sm:h-[100px] sm:w-[250px] md:h-[120px] md:w-[300px] rounded-2xl text-white p-3 flex items-center justify-center shadow-md transition ${
+                    ebookDownloaded
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-accent-green hover:bg-green-700"
+                  }`}
+                >
+                  <FontAwesomeIcon
+                    icon={faPenToSquare}
+                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white"
+                  />
+                </button>
+                <p className="mt-4 text-lg sm:text-xl md:text-2xl font-medium text-gray-700 font-bold">
+                  {ebookDownloaded ? "E-book já baixado" : "Baixar E-book"}
+                </p>
+              </>
+            )}
+
+            <button
+              onClick={() => {
+                localStorage.removeItem("leadId");
+                localStorage.removeItem("formCompleted");
+                router.push("/")
+              }}
+              className="mt-10 bg-gray-500 h-[80px] w-[200px] rounded-xl text-white p-2 flex flex-col items-center justify-center shadow-md hover:bg-gray-700 transition"
+            >
+              <FontAwesomeIcon icon={faHome} className="mb-2 text-xl" />
+              Ir para Home
+            </button>
+          </div>
+  
         <Footer />
       </div>
     </>

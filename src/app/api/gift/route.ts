@@ -21,7 +21,8 @@ export async function GET(req: Request) {
         select: {
             isPhysical: true,
             hasClaimed: true,
-            code: true
+            code: true,
+            createdAt: true
             
         },
       });

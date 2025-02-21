@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGift, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faGift, faHome, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { Footer } from "@/components/Footer";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import Image from "next/image";
 function GiftContent() {
   const [code, setCode] = useState<string | null>(null);
   const [hasClaimed, setHasClaimed] = useState<boolean | null>(null);
+  const [createdAt, setCreatedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isFadingOut, setIsFadingOut] = useState<boolean>(false);
@@ -32,6 +33,7 @@ function GiftContent() {
 
         setCode(data.code);
         setHasClaimed(data.hasClaimed);
+        setCreatedAt(data.createdAt);
         setError(null);
       } catch (error: unknown) {
         const errorMessage: string = error instanceof Error ? error.message : "Erro ao carregar o gift. Tente novamente mais tarde.";
@@ -118,8 +120,15 @@ function GiftContent() {
           <h2 className="text-2xl font-semibold text-gray-800 transition-opacity duration-500 opacity-100">
             Você ganhou um gift
           </h2>
-          <p className="text-accent-green font-bold mt-2 transition-opacity duration-500 opacity-100">
-            {hasClaimed ? "Este brinde já foi retirado" : "Apresente o código abaixo para um de nossos consultores"}
+          <p className={`text-accent-green text-accent-green font-bold mt-2 transition-opacity duration-500 opacity-100`}>
+              {hasClaimed 
+              ? "Este brinde já foi retirado" 
+              : `Apresente o código abaixo para um de nossos consultores. Você tem até ${new Date(createdAt!).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+                })} para retirar.`
+              }
           </p>
           <div className="mt-4 text-white bg-accent-green text-4xl md:text-6xl font-bold px-8 py-3 rounded-lg transition-opacity duration-500 opacity-100">
             {code}
@@ -127,15 +136,33 @@ function GiftContent() {
           <p className="text-gray-500 mt-5 text-sm font-bold transition-opacity duration-500 opacity-100">
             Este código é válido somente para <br /> a Expo Revestir 2025
           </p>
-          <div className="mt-8 md:mt-16 flex flex-col items-center transition-opacity duration-500 opacity-100">
-            <button
-              onClick={() => router.push("/client/thank-you/confirmation")}
-              className="px-12 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-300 flex items-center justify-center"
-            >
-              <FontAwesomeIcon icon={faMapMarkerAlt} size="lg" />
-            </button>
-            <p className="mt-2 text-gray-800 font-semibold">Aonde retirar</p>
+          <div className="mt-8 md:mt-16 flex flex-row items-center justify-center space-x-8 transition-opacity duration-500 opacity-100">
+            <div className="flex flex-col items-center space-y-4">
+              <button
+                onClick={() => router.push("/client/thank-you/confirmation")}
+                className="px-12 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-300 flex items-center justify-center"
+              >
+                <FontAwesomeIcon icon={faMapMarkerAlt} size="lg" />
+              </button>
+              <p className="text-gray-800 font-semibold">Aonde retirar</p>
+            </div>
+
+            <div className="flex flex-col items-center space-y-4">
+              <button
+                onClick={() => {
+                  localStorage.removeItem('leadId');
+                  localStorage.removeItem('formCompleted');
+
+                  router.push("/")
+                }}
+                className="px-12 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-300 flex items-center justify-center"
+              >
+                <FontAwesomeIcon icon={faHome} size="lg" />
+              </button>
+              <p className="text-gray-800 font-semibold">Voltar ao inicio</p>
+            </div>
           </div>
+
         </div>
       </div>
       <Footer />
