@@ -8,13 +8,14 @@ type LinkCustomProps = {
   Icon: React.ElementType;
   activated?: boolean;
   onClick?: () => void;
+  classCustom?: string;
 };
 
-export const LinkCustom: React.FC<LinkCustomProps> = ({ href, title, Icon, activated, onClick }) => {
+export const LinkCustom: React.FC<LinkCustomProps> = ({ href, title, Icon, activated, onClick, classCustom }) => {
   const content = (
     <div
       className={cn(
-        "flex items-center gap-4 px-6 py-1 w-full rounded-lg bg-border-secondary hover:bg-gray-200 transition-all shadow-sm border-t-4",
+        `flex items-center gap-4 px-6 py-1 w-full rounded-lg bg-border-secondary hover:bg-gray-200 transition-all shadow-sm border-t-4 ${classCustom}`,
         activated ? "border-t-accent-green font-bold" : "border-t-accent-green font-medium"
       )}
     >

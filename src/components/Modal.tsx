@@ -2,11 +2,11 @@ import React from "react";
 
 type ModalProps = {
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   children: React.ReactNode;
 };
 
-export const Modal: React.FC<ModalProps> = ({ onClose, onConfirm, children }) => {
+export const Modal: React.FC<ModalProps> = ({ onClose, onConfirm, children,  }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">

@@ -9,14 +9,16 @@ const Account = () => {
   const router = useRouter(); 
 
   const handleLogout = async () => {
+    console.log("Logout iniciado no cliente");
     try {
       const response = await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include", 
       });
-
+  
       if (response.ok) {
-        router.push("/admin"); 
+        router.push("/admin");
+        window.location.href = "/admin";
       } else {
         console.error("Erro ao fazer logout");
       }
@@ -33,7 +35,9 @@ const Account = () => {
             Icon={LogOut}
             title="Sair"
             activated={true}
-            onClick={handleLogout} 
+            onClick={() => {
+              handleLogout();
+            }} 
           />
         </div>
 

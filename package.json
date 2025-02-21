@@ -19,7 +19,9 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@prisma/client": "^6.3.1",
+    "@radix-ui/react-toast": "^1.2.6",
     "bcrypt": "^5.1.1",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cookies-next": "^5.1.0",
     "framer-motion": "^12.4.3",
@@ -34,7 +36,10 @@
     "react-input-mask-next": "^3.0.0-alpha.12",
     "react-modal": "^3.16.3",
     "react-phone-input-2": "^2.15.1",
-    "react-toastify": "^11.0.3"
+    "react-toastify": "^11.0.3",
+    "shadcn-ui": "^0.9.4",
+    "tailwind-merge": "^3.0.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

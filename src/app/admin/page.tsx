@@ -19,6 +19,7 @@ export default function Login() {
   };
 
   async function handleLogin() {
+    if (!isFormValid() || loading) return; 
     setLoading(true);
     setError("");
 
@@ -36,28 +37,32 @@ export default function Login() {
       }
 
       router.replace("/admin/menu");
-
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError('An unexpected error occurred');
+        setError("An unexpected error occurred");
       }
     } finally {
       setLoading(false);
     }
   }
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleLogin();
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-4">
       <Image
-          src="/logo.png"
-          alt="Berneck Logo"
-          width={240}  
-          height={100} 
-          className="max-w-60 mb-8"
-        />
-      <div className="w-full max-w-sm">
+        src="/logo.png"
+        alt="Berneck Logo"
+        width={240}
+        height={100}
+        className="max-w-60 mb-8"
+      />
+      <form onSubmit={handleSubmit} className="w-full max-w-sm">
         {error && <p className="text-red-500 text-center mb-3">{error}</p>}
 
         <InputCustom
@@ -83,11 +88,12 @@ export default function Login() {
               : "bg-green-800 !text-white hover:bg-green-700"
           }`}
           onClick={handleLogin}
-          disabled={loading || !isFormValid()} 
+          disabled={loading || !isFormValid()}
+          type="submit"
         >
           {loading ? <span className="loader"></span> : "Entrar"}
         </Button>
-      </div>
+      </form>
 
       <Footer />
     </div>

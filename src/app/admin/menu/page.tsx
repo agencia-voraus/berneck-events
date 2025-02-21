@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import { LinkButton } from "@/components/LinkButton";
 import { Navbar } from "@/components/Navbar";
-import { Check, CirclePause, QrCodeIcon, ClipboardPenLine, GitCompareArrows } from "lucide-react";
+import { Check, CirclePause, QrCodeIcon, ClipboardPenLine, GitCompareArrows, UsersIcon } from "lucide-react";
 import { LinkCustom } from "@/components/LinkCustom";
 import Image from "next/image";
 
@@ -119,32 +119,40 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className="mt-10 max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 rounded-lg p-2">
-        <LinkButton 
-          href="/admin/gift" 
-          title="Controle de Brindes" 
-          Icon={() => <GitCompareArrows />} 
-        />
-        <LinkButton 
-          href="/admin/report" 
-          title="Relatório" 
-          Icon={() => <ClipboardPenLine />} 
-        />
-        <LinkButton 
-          href="/admin/validator" 
-          title="Validar código GIFT" 
-          Icon={() => <QrCodeIcon />} 
-        />
-
-        {isAdmin && (
-          <LinkCustom
-            title={!isActive ? "Habilitar distribuição de códigos" : "Desabilitar distribuição de códigos"}
-            Icon={!isActive ? Check : CirclePause}
-            onClick={() => setIsModalOpen(true)}
+      <div className=" flex-grow min-h-80 max-h-80 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 rounded-lg p-2 pb-20">
+          <LinkButton 
+            href="/admin/gift" 
+            title="Controle de Brindes" 
+            Icon={() => <GitCompareArrows />} 
           />
-        )}
-      </div>
+          <LinkButton 
+            href="/admin/report" 
+            title="Relatório" 
+            Icon={() => <ClipboardPenLine />} 
+          />
+          <LinkButton 
+            href="/admin/validator" 
+            title="Validar código GIFT" 
+            Icon={() => <QrCodeIcon />} 
+          />
+          {isAdmin && (
 
+            <>
+             <LinkButton 
+                href="/admin/users" 
+                title="Criar Usuários" 
+                Icon={() => <UsersIcon />} 
+              />
+
+                <LinkCustom
+                  title={!isActive ? "Habilitar distribuição de códigos" : "Desabilitar distribuição de códigos"}
+                  Icon={!isActive ? Check : CirclePause}
+                  onClick={() => setIsModalOpen(true)}
+                  classCustom="z-10"
+                />
+            </>
+          )}
+        </div>
 
       <Navbar />
 
