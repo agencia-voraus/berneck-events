@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/Button";
@@ -140,7 +141,7 @@ function FormContent() {
           <form className="space-y-4 mt-5" onSubmit={handleSubmit}>
             <InputCustom label="Nome completo" type="text" name="nome" placeholder="Nome completo" value={formData.nome} onChange={handleChange} required />
             <InputCustom label="Cargo" type="text" name="cargo" value={formData.cargo} placeholder="Cargo" onChange={handleChange} required />
-            <InputDateCustom label="Data de nascimento" name="dataNascimento" value={formData.dataNascimento} onChange={handleChange} required />
+            <InputDateCustom label="Data de nascimento" type="date" name="dataNascimento" value={formData.dataNascimento} onChange={handleChange} required />
             <InputPhoneCustom label="Celular" value={formData.celular} onChange={handleChangePhone} />
             <InputCustom label="CEP" type="text" name="cep" value={formData.cep} onChange={handleCepChange} placeholder="00000-000" required />
             <InputCustom label="Rua" type="text" name="rua" value={formData.rua} onChange={handleChange} placeholder="Rua" required disabled={cepPreenchido} />

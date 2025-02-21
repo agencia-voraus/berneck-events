@@ -119,7 +119,7 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-10 max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 rounded-lg p-2">
         <LinkButton 
           href="/admin/gift" 
           title="Controle de Brindes" 
@@ -137,13 +137,14 @@ const Menu = () => {
         />
 
         {isAdmin && (
-            <LinkCustom
-              title={!isActive ? "Habilitar distribuição de códigos" : "Desabilitar distribuição de códigos"}
-              Icon={!isActive ? Check : CirclePause}
-              onClick={() => setIsModalOpen(true)}
-            />
+          <LinkCustom
+            title={!isActive ? "Habilitar distribuição de códigos" : "Desabilitar distribuição de códigos"}
+            Icon={!isActive ? Check : CirclePause}
+            onClick={() => setIsModalOpen(true)}
+          />
         )}
       </div>
+
 
       <Navbar />
 
