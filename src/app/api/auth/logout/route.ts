@@ -1,23 +1,22 @@
-import { NextResponse } from "next/server";
+"use server";
 
-export async function POST() {
+import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers"; 
+
+export async function POST(req: NextRequest) {
   try {
-    const response = NextResponse.json(
-      { message: "Logout realizado com sucesso!" },
-      { status: 200 }
-    );
+    const cookieStore = await cookies();
 
-    response.headers.set(
-      "Set-Cookie",
-      "token=; Path=/; HttpOnly; Secure; SameSite=strict; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
-    );
+    cookieStore.set("token", "", {
+      httpOnly: true,
+      secure: false,
+      maxAge: 0, 
+      path: "/",
+    });
 
-    return response;
+    return NextResponse.json({ message: "Logout realizado com sucesso" });
   } catch (error) {
-    console.error("Erro ao fazer logout:", error);
-    return NextResponse.json(
-      { error: "Erro ao tentar sair" },
-      { status: 500 }
-    );
+    console.error("Erro no logout:", error);
+    return NextResponse.json({ error: "Erro ao realizar logout" }, { status: 500 });
   }
 }
