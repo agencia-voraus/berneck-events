@@ -1,14 +1,14 @@
 "use server";
 
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, password, role } = await req.json();
+    const { name, email, password, role }: { name: string; email: string; password: string; role?: Role } = await req.json();
 
     if (!name || !email || !password) {
       return NextResponse.json({ error: 'Nome, email e senha são obrigatórios' }, { status: 400 });
@@ -47,8 +47,8 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = parseInt(searchParams.get('limit') || '10', 10);
     const skip = (page - 1) * limit;
 
     const [users, totalUsers] = await Promise.all([
@@ -84,13 +84,14 @@ export async function GET(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    const { id, name, email, password, role } = await req.json();
+    const { id, name, email, password, role }: { id: string; name: string; email: string; password?: string; role?: Role } = await req.json();
 
     if (!id || !name || !email) {
       return NextResponse.json({ error: 'ID, nome e email são obrigatórios' }, { status: 400 });
     }
 
-    const data: any = { name, email, role };
+    const data: Partial<{ name: string; email: string; passwordHash: string; role: Role }> = { name, email, role };
+
     if (password) {
       data.passwordHash = await bcrypt.hash(password, 10);
     }
@@ -116,7 +117,7 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const { id } = await req.json();
+    const { id }: { id: string } = await req.json();
 
     if (!id) {
       return NextResponse.json({ error: 'ID é obrigatório' }, { status: 400 });

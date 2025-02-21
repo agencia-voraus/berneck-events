@@ -9,7 +9,7 @@ interface UserListProps {
   onDelete: (id: number) => void;
 }
 
-const UserList: React.FC<UserListProps> = ({ onEdit, onDelete }) => {
+const UserList: React.FC<UserListProps> = ({ onEdit }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);

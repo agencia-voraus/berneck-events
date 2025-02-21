@@ -220,7 +220,7 @@ export async function PATCH(req: Request) {
 
     const uniqueCode = await generateUniqueCode();
 
-    const result = await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx) => {
       if (!stock) {
         const digitalGift = await tx.gift.create({
           data: {
