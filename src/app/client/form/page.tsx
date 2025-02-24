@@ -11,10 +11,10 @@ import Image from "next/image";
 function FormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const queryLeadId = searchParams.get("leadId") ?? localStorage.getItem("leadId");
+  const queryLeadId =
+    searchParams.get("leadId") ?? localStorage.getItem("leadId");
 
   const [dateError, setDateError] = useState("");
-  const [cepPreenchido, setCepPreenchido] = useState(false);
   const [formData, setFormData] = useState({
     nome: "",
     cargo: "",
@@ -47,19 +47,15 @@ function FormContent() {
             uf: data.state || "",
             cidade: data.city || "",
           });
-
-          if (data.street || data.city || data.state) {
-            setCepPreenchido(true);
-          }
         })
         .catch((err) => console.error("Erro ao buscar dados do lead:", err));
     }
   }, [queryLeadId]);
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem("leadId");
+    const storedLeadId = localStorage.getItem("leadId");
 
-    if (!storedEmail || storedEmail === "undefined") {
+    if (!storedLeadId || storedLeadId === "undefined") {
       router.push("/client");
     }
   }, [router]);
@@ -68,7 +64,9 @@ function FormContent() {
     setFormData((prev) => ({ ...prev, celular: phone }));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -84,7 +82,9 @@ function FormContent() {
     if (cep.length === 9) {
       try {
         const numericCep = cep.replace("-", "");
-        const response = await fetch(`https://viacep.com.br/ws/${numericCep}/json/`);
+        const response = await fetch(
+          `https://viacep.com.br/ws/${numericCep}/json/`
+        );
         const data = await response.json();
 
         if (!data.erro) {
@@ -94,7 +94,6 @@ function FormContent() {
             cidade: data.localidade || "",
             uf: data.uf || "",
           }));
-          setCepPreenchido(true);
         } else {
           console.warn("CEP não encontrado");
         }
@@ -159,6 +158,8 @@ function FormContent() {
     return `${day}/${month}/${year}`;
   };
 
+  const isBrazilianPhone = formData.celular.trim().startsWith("+55");
+
   const isFormValid = () => {
     const {
       nome,
@@ -176,13 +177,15 @@ function FormContent() {
       nome.trim() !== "" &&
       cargo.trim() !== "" &&
       celular.trim() !== "" &&
-      cep.trim() !== "" &&
-      rua.trim() !== "" &&
-      numero.trim() !== "" &&
-      uf.trim() !== "" &&
-      cidade.trim() !== "" &&
       isValidDate(dataNascimento) &&
-      !dateError
+      !dateError &&
+      (!isBrazilianPhone || (
+        cep.trim() !== "" &&
+        rua.trim() !== "" &&
+        numero.trim() !== "" &&
+        uf.trim() !== "" &&
+        cidade.trim() !== ""
+      ))
     );
   };
 
@@ -204,7 +207,7 @@ function FormContent() {
       ...formData,
       dataNascimento: formatDateForBackend(formData.dataNascimento),
     };
-    console.log(formattedData);
+
     try {
       const response = await fetch("/api/lead", {
         method: "PATCH",
@@ -285,7 +288,7 @@ function FormContent() {
               value={formData.cep}
               onChange={handleCepChange}
               placeholder="00000-000"
-              required
+              required={isBrazilianPhone}
             />
             <InputCustom
               label="Rua"
@@ -294,8 +297,7 @@ function FormContent() {
               value={formData.rua}
               onChange={handleChange}
               placeholder="Rua"
-              required
-              disabled={cepPreenchido}
+              required={isBrazilianPhone}
             />
             <div className="grid grid-cols-2 gap-4">
               <InputCustom
@@ -305,7 +307,7 @@ function FormContent() {
                 value={formData.numero}
                 onChange={handleChange}
                 placeholder="Número"
-                required
+                required={isBrazilianPhone}
               />
               <InputCustom
                 label="Complemento"
@@ -318,15 +320,13 @@ function FormContent() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col w-full">
-                <label className="text-3xl font-semibold mb-2">
-                  UF
-                </label>
+                <label className="text-3xl font-semibold mb-2">UF</label>
                 <select
                   name="uf"
                   value={formData.uf}
                   onChange={handleChange}
                   className="w-full p-3 border rounded-lg bg-gray-100 text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 mt-1"
-                  disabled={cepPreenchido}
+                  required={isBrazilianPhone}
                 >
                   <option value="">Selecione</option>
                   {[
@@ -348,8 +348,7 @@ function FormContent() {
                 value={formData.cidade}
                 onChange={handleChange}
                 placeholder="Cidade"
-                required
-                disabled={cepPreenchido}
+                required={isBrazilianPhone}
               />
             </div>
 
