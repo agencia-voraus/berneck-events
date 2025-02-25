@@ -13,9 +13,11 @@ export async function GET(req: Request) {
 
     let where = {};
     if (filter === "entregues") {
-      where = { hasClaimed: true };
+      where = { hasClaimed: true, isPhysical: true };
     } else if (filter === "nao-entregues") {
-      where = { hasClaimed: false };
+      where = { hasClaimed: false, isPhysical: true };
+    } else if (filter === 'produto-digital') {
+      where = { isPhysical: false };
     }
 
     const gifts = await prisma.gift.findMany({

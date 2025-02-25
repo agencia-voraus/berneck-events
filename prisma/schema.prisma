@@ -27,7 +27,7 @@ model Lead {
 }
 model Gift {
   id              String            @id @default(uuid())
-  leadId          String?           @unique 
+  leadId          String?           
   lead            Lead?             @relation(fields: [leadId], references: [id])
   code            String?           @unique 
   hasClaimed      Boolean           @default(false)

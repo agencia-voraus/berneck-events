@@ -16,14 +16,14 @@ export async function GET(req: Request) {
         );
       }
   
-      const gift = await prisma.gift.findUnique({
+      const gift = await prisma.gift.findFirst({
         where: { leadId },
+        orderBy: { createdAt: 'desc' },
         select: {
-            isPhysical: true,
-            hasClaimed: true,
-            code: true,
-            createdAt: true
-            
+          isPhysical: true,
+          hasClaimed: true,
+          code: true,
+          createdAt: true,
         },
       });
   

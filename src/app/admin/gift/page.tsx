@@ -19,6 +19,8 @@ interface Gift {
   lead: Lead;
   code: string;
   hasClaimed: boolean;
+  isPhysical: boolean;
+  
 }
 
 const GiftList = () => {
@@ -79,23 +81,38 @@ const GiftList = () => {
           </div>
 
           {showFilters && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-wrap gap-3 mb-6">
-              {["todos", "entregues", "nao-entregues"].map((tipo) => (
-                <ButtonCustom key={tipo} variant={filtro === tipo ? "default" : "outline"} onClick={() => setFiltro(tipo)}>
-                  {tipo === "todos" ? "Todos" : tipo === "entregues" ? "Entregues" : "Não Entregues"}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex flex-wrap gap-3 mb-6"
+            >
+              {["todos", "entregues", "nao-entregues", "produto-digital"].map((tipo) => (
+                <ButtonCustom
+                  key={tipo}
+                  variant={filtro === tipo ? "default" : "outline"}
+                  onClick={() => setFiltro(tipo)}
+                >
+                  {tipo === "todos"
+                    ? "Todos"
+                    : tipo === "entregues"
+                    ? "Entregues"
+                    : tipo === "nao-entregues"
+                    ? "Não Entregues"
+                    : "Produtos Digitais"}
                 </ButtonCustom>
               ))}
             </motion.div>
           )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-auto-fit md:grid-cols-auto-fit lg:grid-cols-auto-fit gap-4 w-full max-w-7xl mx-auto">       
+          <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4 w-full max-w-7xl mx-auto">
             {gifts.map((gift: Gift, index) => {
                 console.log(`Brinde ${index + 1}:`, {
                   nome: gift.lead.fullName,
                   cargo: gift.lead.jobTitle,
                   cidade: gift.lead.city,
                   codigo: gift.code,
-                  retirado: gift.hasClaimed
+                  retirado: gift.hasClaimed,
+                  isPhysical: gift.isPhysical
                 });
 
                 return (
@@ -106,6 +123,7 @@ const GiftList = () => {
                     cidade={gift.lead.city} 
                     codigo={gift.code} 
                     retirado={gift.hasClaimed} 
+                    tipo={gift.isPhysical ? 'physical' : 'digital'}
                   />
                 );
               })}

@@ -187,7 +187,7 @@ export async function PATCH(req: Request) {
     });
 
     const existingGift = await prisma.gift.findFirst({
-      where: { leadId: lead.id },
+      where: { leadId: lead.id, isPhysical: true  },
     });
 
     if (existingGift) {
