@@ -6,13 +6,13 @@ const prisma = new PrismaClient();
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = parseInt(searchParams.get("pageSize") || "10");
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const pageSize = parseInt(searchParams.get("pageSize") || "10", 10);
     const filter = searchParams.get("filter");
-    const search = searchParams.get("search")?.trim(); 
+    const search = searchParams.get("search")?.trim();
     const skip = (page - 1) * pageSize;
 
-    let where: any = {};
+    const where: Record<string, unknown> = {};
 
     if (filter === "entregues") {
       where.hasClaimed = true;
@@ -33,7 +33,6 @@ export async function GET(req: Request) {
       };
     }
 
-    // 🔹 Buscar brindes com os filtros aplicados
     const gifts = await prisma.gift.findMany({
       skip,
       take: pageSize,

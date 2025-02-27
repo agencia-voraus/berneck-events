@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const gift = await prisma.gift.findUnique({
+    const gift = await prisma.gift.findFirst({
       where: { leadId },
     });
 
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     const pdfBuffer = fs.readFileSync(pdfPath);
 
     await prisma.gift.update({
-      where: { leadId },
+      where: { id: gift.id }, 
       data: {
         hasClaimed: true,
         claimedAt: new Date(),
