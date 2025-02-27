@@ -255,11 +255,11 @@ function FormContent() {
               required
             />
             <InputCustom
-              label="Cargo"
+              label="Profissão"
               type="text"
               name="cargo"
               value={formData.cargo}
-              placeholder="Cargo"
+              placeholder="Profissão"
               onChange={handleChange}
               required
             />

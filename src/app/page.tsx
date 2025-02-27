@@ -36,16 +36,13 @@ const Menu = () => {
           height={100}
           className="max-w-60 mb-8 mx-auto"
         />
-        <p className="text-2xl mb-2">Cadastre-se</p>
-        <p className="text-2xl mb-4">
-          e tenha acesso a um <br />
-          <strong className="text-4xl text-border-primary">Gift Exclusivo</strong>
-        </p>
+        <p className="text-2xl mb-2">Cadastre-se ou atualize seus dados para receber nosso material.</p>
+        
         <Button
           onClick={handleCadastrar}
           className="bg-accent-green text-white w-full py-2 rounded-xl hover:bg-green-800"
         >
-          Cadastrar-se
+          Clique aqui
         </Button>
       </div>
 

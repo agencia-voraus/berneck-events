@@ -134,7 +134,7 @@ function GiftContent() {
             {code}
           </div>
           <p className="text-gray-500 mt-5 text-sm font-bold transition-opacity duration-500 opacity-100">
-            Este código é válido somente para <br /> a Expo Revestir 2025
+          Esse código é válido somente <br />para hoje {new Date().toLocaleDateString()}
           </p>
           <div className="mt-8 md:mt-16 flex flex-row items-center justify-center space-x-8 transition-opacity duration-500 opacity-100">
             <div className="flex flex-col items-center space-y-4">

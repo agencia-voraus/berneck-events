@@ -9,17 +9,31 @@ export async function GET(req: Request) {
     const page = parseInt(searchParams.get("page") || "1");
     const pageSize = parseInt(searchParams.get("pageSize") || "10");
     const filter = searchParams.get("filter");
+    const search = searchParams.get("search")?.trim(); 
     const skip = (page - 1) * pageSize;
 
-    let where = {};
+    let where: any = {};
+
     if (filter === "entregues") {
-      where = { hasClaimed: true, isPhysical: true };
+      where.hasClaimed = true;
+      where.isPhysical = true;
     } else if (filter === "nao-entregues") {
-      where = { hasClaimed: false, isPhysical: true };
-    } else if (filter === 'produto-digital') {
-      where = { isPhysical: false };
+      where.hasClaimed = false;
+      where.isPhysical = true;
+    } else if (filter === "produto-digital") {
+      where.isPhysical = false;
     }
 
+    if (search) {
+      where.lead = {
+        fullName: {
+          contains: search,
+          mode: "insensitive",
+        },
+      };
+    }
+
+    // 🔹 Buscar brindes com os filtros aplicados
     const gifts = await prisma.gift.findMany({
       skip,
       take: pageSize,
