@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter, useSearchParams } from "next/navigation";
 import { faGift, faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
@@ -9,20 +9,22 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 
 export default function Confirmation() {
   const router = useRouter();
-  const searchParam = useSearchParams();
-  
   const [code, setCode] = useState<string | null>(null);
   const [leadId, setLeadId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedLeadId = localStorage.getItem("leadId") || searchParam.get("leadId");
-    if (storedLeadId) {
-      setLeadId(storedLeadId);
-    } else {
-      setLoading(false);
-      setError("Lead ID não encontrado.");
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const storedLeadId = localStorage.getItem("leadId") || urlParams.get("leadId");
+
+      if (storedLeadId) {
+        setLeadId(storedLeadId);
+      } else {
+        setLoading(false);
+        setError("Lead ID não encontrado.");
+      }
     }
   }, []);
 
@@ -54,7 +56,7 @@ export default function Confirmation() {
     };
 
     fetchGift();
-  }, [leadId]); 
+  }, [leadId]);
 
   return (
     <>
@@ -78,7 +80,6 @@ export default function Confirmation() {
             Retire seu gift no local indicado
           </h2>
 
-          {/* Exibição do código */}
           {loading ? (
             <p className="text-gray-500 mt-4">Carregando código...</p>
           ) : error ? (
@@ -102,32 +103,31 @@ export default function Confirmation() {
         </div>
 
         <div className="mt-6 w-full flex flex-col items-center">
-            <div className="flex w-full justify-between max-w-xs space-x-4">
-              <button
-                className="flex-1 px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition flex items-center justify-center"
-                onClick={() => {
-                  localStorage.removeItem("leadId");
-                  localStorage.removeItem("formCompleted");
-                  router.push("/client");
-                }}
-              >
-                <FontAwesomeIcon icon={faArrowLeft} size="lg" />
-              </button>
+          <div className="flex w-full justify-between max-w-xs space-x-4">
+            <button
+              className="flex-1 px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition flex items-center justify-center"
+              onClick={() => {
+                localStorage.removeItem("leadId");
+                localStorage.removeItem("formCompleted");
+                router.push("/client");
+              }}
+            >
+              <FontAwesomeIcon icon={faArrowLeft} size="lg" />
+            </button>
 
-              <button
-                className="flex-1 px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition flex items-center justify-center"
-                onClick={() => router.push("/client/thank-you")}
-              >
-                <FontAwesomeIcon icon={faArrowRight} size="lg" />
-              </button>
-            </div>
-
-            {/* Textos abaixo dos botões */}
-            <div className="mt-2 flex justify-between w-full max-w-xs">
-              <p className="text-gray-800 font-semibold text-center flex-1">Voltar</p>
-              <p className="text-gray-800 font-semibold text-center flex-1">Próximo</p>
-            </div>
+            <button
+              className="flex-1 px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition flex items-center justify-center"
+              onClick={() => router.push("/client/thank-you")}
+            >
+              <FontAwesomeIcon icon={faArrowRight} size="lg" />
+            </button>
           </div>
+
+          <div className="mt-2 flex justify-between w-full max-w-xs">
+            <p className="text-gray-800 font-semibold text-center flex-1">Voltar</p>
+            <p className="text-gray-800 font-semibold text-center flex-1">Próximo</p>
+          </div>
+        </div>
       </div>
 
       <Footer isFixed={true} />
