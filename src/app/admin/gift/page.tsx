@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { toast } from "react-toastify";
 import { ButtonCustom } from "@/components/ButtonCustom";
 import AuthenticatedLayout from "@/components/AuthenticatedLogin";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Lead {
   fullName: string;
@@ -126,15 +127,18 @@ const GiftList = () => {
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
+        <div className="relative pb-20 flex flex-row items-center justify-center mt-6 gap-4">
           <ButtonCustom onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
-            Anterior
+            <ChevronLeft className="w-5 h-5" />
           </ButtonCustom>
+
           <span className="py-2 px-4 bg-gray-200 rounded-lg">{page} / {totalPages}</span>
+
           <ButtonCustom onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>
-            Próximo
+            <ChevronRight className="w-5 h-5" />
           </ButtonCustom>
         </div>
+
       </div>
       <Navbar />
     </AuthenticatedLayout>

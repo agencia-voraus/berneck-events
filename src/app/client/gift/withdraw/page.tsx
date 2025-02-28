@@ -139,12 +139,12 @@ function GiftContent() {
           <div className="mt-8 md:mt-16 flex flex-row items-center justify-center space-x-8 transition-opacity duration-500 opacity-100">
             <div className="flex flex-col items-center space-y-4">
               <button
-                onClick={() => router.push("/client/thank-you/confirmation")}
+                onClick={() => router.push(`/client/thank-you/confirmation?leadId=${leadId}`)}
                 className="px-12 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-all duration-300 flex items-center justify-center"
               >
                 <FontAwesomeIcon icon={faMapMarkerAlt} size="lg" />
               </button>
-              <p className="text-gray-800 font-semibold">Aonde retirar</p>
+              <p className="text-gray-800 font-semibold">Onde retirar</p>
             </div>
 
             <div className="flex flex-col items-center space-y-4">

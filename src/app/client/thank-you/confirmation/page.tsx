@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { faGift, faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { Footer } from "@/components/Footer";
@@ -9,20 +9,32 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 
 export default function Confirmation() {
   const router = useRouter();
+  const searchParam = useSearchParams();
+  
   const [code, setCode] = useState<string | null>(null);
   const [leadId, setLeadId] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const storedLeadId = localStorage.getItem("leadId") || searchParam.get("leadId");
+    if (storedLeadId) {
+      setLeadId(storedLeadId);
+    } else {
+      setLoading(false);
+      setError("Lead ID não encontrado.");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!leadId) return;
+
     const fetchGift = async () => {
       try {
         setLoading(true);
         const response = await fetch(`/api/gift?leadId=${leadId}`);
         if (!response.ok)
-          throw new Error(
-            "Erro ao buscar gift, por favor entre em contato com o suporte!"
-          );
+          throw new Error("Erro ao buscar gift, por favor entre em contato com o suporte!");
 
         const data = await response.json();
 
@@ -33,25 +45,16 @@ export default function Confirmation() {
         setCode(data.code);
         setError(null);
       } catch (error: unknown) {
-        const errorMessage: string =
-          error instanceof Error
-            ? error.message
-            : "Erro ao carregar o gift. Tente novamente mais tarde.";
+        const errorMessage =
+          error instanceof Error ? error.message : "Erro ao carregar o gift. Tente novamente mais tarde.";
         setError(errorMessage);
       } finally {
         setLoading(false);
       }
     };
 
-    const storedLeadId = localStorage.getItem("leadId");
-    if (storedLeadId) {
-      setLeadId(storedLeadId);
-      fetchGift();
-    } else {
-      setLoading(false);
-      setError("Lead ID não encontrado.");
-    }
-  }, [leadId]);
+    fetchGift();
+  }, [leadId]); 
 
   return (
     <>

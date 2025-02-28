@@ -15,9 +15,11 @@ interface ButtonCustomProps {
       link: "text-accent-green underline hover:text-green-700"
     };
   
+    const disabledClasses = "bg-gray-300 text-gray-500 cursor-not-allowed hover:bg-gray-300";
+  
     return (
       <button
-        className={`${variantClasses[variant]} px-6 py-2 rounded-full text-sm font-medium transition ${className}`}
+        className={`${disabled ? disabledClasses : variantClasses[variant]} px-6 py-2 rounded-full text-sm font-medium transition ${className}`}
         onClick={onClick}
         disabled={disabled}
         type={type}
@@ -26,4 +28,3 @@ interface ButtonCustomProps {
       </button>
     );
   }
-  
