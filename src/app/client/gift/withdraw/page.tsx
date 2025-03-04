@@ -13,6 +13,8 @@ function GiftContent() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isFadingOut, setIsFadingOut] = useState<boolean>(false);
+  const [ message, setMessage ] = useState<string>();
+  const [ messageProm, setMessageProm ] = useState<string>();
   const router = useRouter();
   const searchParam = useSearchParams();
 
@@ -34,6 +36,11 @@ function GiftContent() {
         setCode(data.code);
         setHasClaimed(data.hasClaimed);
         setCreatedAt(data.createdAt);
+
+
+
+
+
         setError(null);
       } catch (error: unknown) {
         const errorMessage: string = error instanceof Error ? error.message : "Erro ao carregar o gift. Tente novamente mais tarde.";
@@ -54,6 +61,31 @@ function GiftContent() {
       setError("Lead ID não encontrado.");
     }
   }, [leadId]);
+
+  useEffect(() => {
+    const now = new Date();
+    const formatDate = new Date(createdAt || '');
+
+    const msg = formatDate.toLocaleDateString() === now.toLocaleDateString()
+      ? `Esse código é válido somente para hoje ${formatDate.toLocaleDateString()}`
+      : `Código vencido. Venceu em ${formatDate.toLocaleDateString()}`;
+
+    setMessage(msg);
+    
+    if (formatDate.toLocaleDateString() === now.toLocaleDateString()) {
+      const msgProm = hasClaimed 
+          ? "Este brinde já foi retirado" 
+          : `Apresente o código abaixo para um de nossos consultores. você tem até hoje ${(new Date(createdAt || '')).toLocaleDateString()} `;
+
+          setMessageProm(msgProm);
+    } else {
+      setMessageProm(`Código vencido. Venceu em ${(new Date(createdAt || '')).toLocaleDateString()}`);
+    }
+
+   
+    
+    
+  }, [createdAt, hasClaimed]);
 
   if (loading || isFadingOut) {
     return (
@@ -121,21 +153,16 @@ function GiftContent() {
             Você ganhou um gift
           </h2>
           <p className={`text-accent-green text-accent-green font-bold mt-2 transition-opacity duration-500 opacity-100`}>
-              {hasClaimed 
-              ? "Este brinde já foi retirado" 
-              : `Apresente o código abaixo para um de nossos consultores. Você tem até ${new Date(createdAt!).toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-                })} para retirar.`
-              }
+             {messageProm}
           </p>
           <div className="mt-4 text-white bg-accent-green text-4xl md:text-6xl font-bold px-8 py-3 rounded-lg transition-opacity duration-500 opacity-100">
             {code}
           </div>
-          <p className="text-gray-500 mt-5 text-sm font-bold transition-opacity duration-500 opacity-100">
-          Esse código é válido somente <br />para hoje {new Date(createdAt!).toLocaleDateString()}
-          </p>
+              {!hasClaimed ? (
+                 <p className="text-gray-500 mt-5 text-sm font-bold transition-opacity duration-500 opacity-100">
+                    {message}
+                </p>
+              ) : ''}
           <div className="mt-8 md:mt-16 flex flex-row items-center justify-center space-x-8 transition-opacity duration-500 opacity-100">
             <div className="flex flex-col items-center space-y-4">
               <button

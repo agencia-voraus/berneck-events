@@ -10,23 +10,21 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
   const [actionTermsAccepted, setActionTermsAccepted] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [modalType, setModalType] = useState<string | null>(null);
-  const [isScrollable, setIsScrollable] = useState<boolean>(false);
+  const [showTermsModal, setShowTermsModal] = useState<boolean>(false);
+  const [showActionModal, setShowActionModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<string | null>(null);
-  const termsRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("leadId");
     const formCompleted = localStorage.getItem("formCompleted");
 
-    if (storedEmail == 'undefined') {
+    if (storedEmail == "undefined") {
       localStorage.removeItem("leadId");
       localStorage.removeItem("formCompleted");
     }
-    
+
     if (storedEmail) {
       router.push("/client/form");
     }
@@ -36,42 +34,35 @@ const Login: React.FC = () => {
     }
   }, [router]);
 
-  useEffect(() => {
-    if (termsRef.current) {
-      const { scrollHeight, clientHeight } = termsRef.current;
-      setIsScrollable(scrollHeight > clientHeight);
-    }
-  }, [showModal]);
-
   const isButtonDisabled = !email || !termsAccepted || !actionTermsAccepted || loading;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!validateEmail(email)) {
       setEmailError("Formato de e-mail inválido.");
       return;
     }
-  
+
     if (isButtonDisabled) return;
-  
+
     setLoading(true);
     try {
       const response = await fetch(`/api/lead`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }), 
+        body: JSON.stringify({ email }),
       });
-    
+
       if (!response.ok) {
         throw new Error("Erro ao salvar o e-mail");
       }
-    
+
       const data = await response.json();
       const leadId = data.id ?? data.lead.id;
       console.log(leadId);
       localStorage.setItem("leadId", leadId);
-      
+
       router.push(`/client/form?leadId=${leadId}`);
     } catch (error) {
       console.error("Erro ao salvar e-mail:", error);
@@ -85,41 +76,14 @@ const Login: React.FC = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  
 
-
+  // Função para abrir o modal respectivo
   const handleCheckboxClick = (type: string) => {
     if (type === "terms") {
-      if (termsAccepted) {
-        setTermsAccepted(false);
-      } else {
-        setModalType("terms");
-        setShowModal(true);
-      }
+      setShowTermsModal(true);
+    } else if (type === "actionTerms") {
+      setShowActionModal(true);
     }
-    if (type === "actionTerms") {
-      if (actionTermsAccepted) {
-        setActionTermsAccepted(false);
-      } else {
-        setModalType("actionTerms");
-        setShowModal(true);
-      }
-    }
-  };
-
-  const handleScroll = () => {
-    if (termsRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = termsRef.current;
-      if (scrollTop + clientHeight >= scrollHeight - 10) {
-        setIsScrollable(false);
-      }
-    }
-  };
-
-  const handleAcceptTerms = () => {
-    if (modalType === "terms") setTermsAccepted(true);
-    if (modalType === "actionTerms") setActionTermsAccepted(true);
-    setShowModal(false);
   };
 
   return (
@@ -127,9 +91,9 @@ const Login: React.FC = () => {
       <div className="w-full max-w-sm bg-white p-6 rounded-lg">
         <div className="flex justify-center mb-4 mt-7">
           <Image src="/logo.png" alt="Logo da empresa" width={200} height={50} priority />
-        </div>     
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <InputCustom 
+          <InputCustom
             type="email"
             placeholder="Digite seu e-mail"
             label="E-mail"
@@ -141,9 +105,7 @@ const Login: React.FC = () => {
             }}
             required
           />
-
           {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
-
 
           <div className="flex items-center space-x-2">
             <input
@@ -154,7 +116,7 @@ const Login: React.FC = () => {
               className="w-4 h-4 border-gray-300 rounded accent-green-700 cursor-pointer"
             />
             <label htmlFor="terms" className="text-gray-700 text-sm">
-              Li e concordo com os termos e condições
+              Li e concordo com os termos de uso
             </label>
           </div>
           <div className="flex items-center space-x-2">
@@ -173,9 +135,7 @@ const Login: React.FC = () => {
             type="submit"
             disabled={isButtonDisabled}
             className={`w-full p-3 rounded-lg h-38 ${
-              isButtonDisabled
-                ? "!bg-gray-400 cursor-not-allowed"
-                : "bg-green-800 text-white hover:bg-green-700"
+              isButtonDisabled ? "!bg-gray-400 cursor-not-allowed" : "bg-green-800 text-white hover:bg-green-700"
             }`}
           >
             {loading ? "Carregando..." : "Enviar"}
@@ -184,17 +144,13 @@ const Login: React.FC = () => {
       </div>
 
       <Footer />
-      
-      {showModal && (
+
+      {showTermsModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-bold mb-4">Termos e Condições</h2>
-            <div
-              ref={termsRef}
-              onScroll={handleScroll}
-              className="h-48 overflow-y-auto border p-2 text-sm text-gray-700 mb-4"
-            >
-              <h1>Termos de Uso</h1>
+            <h2 className="text-xl font-bold mb-4">Termos de Uso</h2>
+            <div className="h-48 overflow-y-auto border p-2 text-sm text-gray-700 mb-4">
+            <h1>Termos de Uso</h1>
               <p>Bem-vindo. Ao acessar ou utilizar nosso aplicativo, você concorda com estes Termos de Uso. Caso não concorde com qualquer um desses termos, você não deverá usar o serviço. Recomendamos que leia atentamente todo o conteúdo antes de utilizar o aplicativo.</p>
               
               <h2>1. Aceitação dos Termos</h2>
@@ -252,47 +208,78 @@ const Login: React.FC = () => {
               
               <h2>13. Contato</h2>
               <p>Para dúvidas ou mais informações, entre em contato pelo e-mail <a href="mailto:marketing@berneck.com.br">marketing@berneck.com.br</a>.</p>
-              
-              <h1>Termo de Aceite para Cadastro no Aplicativo – Ação de Marketing em Feira</h1>
-              
-              <h2>1. Objetivo</h2>
-              <p>Este termo estabelece as condições para a participação na ação de marketing promovida pela Berneck.</p>
-              
-              <h2>2. Dados Coletados</h2>
-              <p>Para participar, o usuário deverá fornecer:</p>
-              <ul>
-                  <li>Nome completo</li>
-                  <li>Profissão</li>
-                  <li>Data de nascimento</li>
-                  <li>Endereço de e-mail</li>
-                  <li>Número de celular</li>
-                  <li>Endereço completo</li>
-              </ul>
-              
-              <h2>3. Uso das Informações</h2>
-              <p>Os dados serão utilizados exclusivamente para cadastro e validação na base da Berneck.</p>
-              
-              <h2>4. Proteção de Dados</h2>
-              <p>A Berneck se compromete a proteger a privacidade dos participantes conforme a LGPD (Lei nº 13.709/2018).</p>
-              
-              <h2>5. Aceite dos Termos</h2>
-              <p>Ao clicar em Aceito os Termos, o participante confirma que leu e concorda com os termos estabelecidos.</p>
-              
-              <p>A Berneck agradece sua participação e deseja uma excelente experiência!</p>
             </div>
             <div className="flex space-x-2">
               <button
-                onClick={() => setShowModal(false)}
+                onClick={() => setShowTermsModal(false)}
                 className="w-full p-2 rounded-lg text-red-500 border border-red-500"
               >
                 Não Aceitar
               </button>
               <button
-                onClick={handleAcceptTerms}
-                disabled={isScrollable}
-                className={`w-full p-2 rounded-lg transition ${
-                  isScrollable ? "bg-gray-400 cursor-not-allowed" : "bg-green-800 text-white hover:bg-green-700"
-                }`}
+                onClick={() => {
+                  setTermsAccepted(true);
+                  setShowTermsModal(false);
+                }}
+                className="w-full p-2 rounded-lg bg-green-800 text-white hover:bg-green-700"
+              >
+                Aceitar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showActionModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-xl font-bold mb-4">Termos da Ação</h2>
+            <div className="h-48 overflow-y-auto border p-2 text-sm text-gray-700 mb-4">
+              <h1>Termo de Aceite para Cadastro no Aplicativo</h1>
+
+              <h2>1. OBJETIVO:</h2>
+              <p>Este Termo de Aceite tem como finalidade estabelecer as condições para a participação na ação de marketing promovida pela Berneck, por meio do cadastro ou validação de dados no aplicativo oficial da campanha. O participante, ao aceitar este termo, terá direito à retirada de um gift físico e/ou digital (e-book).</p>
+          
+              <h2>2. DADOS COLETADOS:</h2>
+              <p>Para participar da ação para o recebimento dos gifts, o participante deverá fornecer os seguintes dados pessoais:</p>
+              <ul>
+                  <li>Nome completo;</li>
+                  <li>Profissão;</li>
+                  <li>Data de nascimento;</li>
+                  <li>Endereço de e-mail;</li>
+                  <li>Número de celular;</li>
+                  <li>Endereço completo (CEP, rua, número, complemento, cidade, estado).</li>
+              </ul>
+          
+              <h2>3. USO DAS INFORMAÇÕES:</h2>
+              <p>Os dados coletados serão utilizados exclusivamente para fins de cadastro e validação na base de dados da Berneck, garantindo o controle de participação na ação de marketing. Nenhuma informação será compartilhada com terceiros.</p>
+          
+              <h2>4. PROTEÇÃO DE DADOS:</h2>
+              <p>A Berneck se compromete a proteger a privacidade dos participantes, garantindo que os dados fornecidos sejam tratados conforme as disposições da Lei Geral de Proteção de Dados (LGPD – Lei nº 13.709/2018). O participante poderá, a qualquer momento, solicitar a atualização ou exclusão de seus dados da base da empresa, por meio do e-mail <a href="mailto:marketing@berneck.com.br">marketing@berneck.com.br</a>.</p>
+          
+              <h2>5. ACEITE DOS TERMOS:</h2>
+              <p>Ao clicar em {'"Aceito os Termos"'} no aplicativo, o participante entende e confirma que:</p>
+              <ul>
+                  <li>Está ciente e concorda com os termos estabelecidos neste documento;</li>
+                  <li>Autoriza a coleta e o tratamento dos dados fornecidos para os fins descritos;</li>
+                  <li>Compreende que os dados não serão compartilhados com terceiros;</li>
+                  <li>Ao clicar no check-box respectivo, no momento do cadastro, está autorizando o recebimento de material publicitário por email, após a realização do evento;</li>
+                  <li>Está ciente de que poderá solicitar a exclusão de seus dados a qualquer momento.</li>
+              </ul>
+            </div>
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setShowActionModal(false)}
+                className="w-full p-2 rounded-lg text-red-500 border border-red-500"
+              >
+                Não Aceitar
+              </button>
+              <button
+                onClick={() => {
+                  setActionTermsAccepted(true);
+                  setShowActionModal(false);
+                }}
+                className="w-full p-2 rounded-lg bg-green-800 text-white hover:bg-green-700"
               >
                 Aceitar
               </button>
