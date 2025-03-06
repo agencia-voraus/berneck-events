@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const pdfPath = path.join(process.cwd(), 'public', 'pdfs', 'AF_V05_E-Book_Revestir_BERNECK_2025.pdf');
+    const pdfPath = path.join(process.cwd(), 'public', 'pdfs', 'E-Book_Revestir_BERNECK_2025.pdf');
 
     if (!fs.existsSync(pdfPath)) {
       return NextResponse.json(
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="AF_V05_E-Book_Revestir_BERNECK_2025.pdf"',
+        'Content-Disposition': 'attachment; filename="E-Book_Revestir_BERNECK_2025.pdf"',
       },
     });
   } catch (error) {

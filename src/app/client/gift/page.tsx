@@ -66,7 +66,7 @@ function BrindeContent() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'AF_V05_E-Book_Revestir_BERNECK_2025.pdf';
+        a.download = 'E-Book_Revestir_BERNECK_2025.pdf';
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
