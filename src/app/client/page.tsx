@@ -311,7 +311,7 @@ const Login: React.FC = () => {
               Lei nº 13.709/2018). O participante poderá, a qualquer momento,
               solicitar a atualização ou exclusão de seus dados da base da
               empresa, por meio do e-mail marketing@berneck.com.br. 5. ACEITE
-              DOS TERMOS Ao clicar em "Aceito os Termos" no aplicativo, o
+              DOS TERMOS Ao clicar em Aceito os Termos no aplicativo, o
               participante entende e confirma que: • Está ciente e concorda com
               os termos estabelecidos neste documento; • Autoriza a coleta e o
               tratamento dos dados fornecidos para os fins descritos; •
