@@ -9,10 +9,10 @@
  *   jobTitle → jobTitle. street e number ficam null.
  */
 
-const { parse } = require('csv-parse/sync');
-const fs = require('fs');
-const path = require('path');
-const { PrismaClient } = require('@prisma/client');
+import { parse } from 'csv-parse/sync';
+import fs from 'fs';
+import path from 'path';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
