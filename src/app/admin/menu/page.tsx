@@ -110,7 +110,7 @@ const Menu = () => {
         <h1 className="text-2xl font-bold text-border-primary mb-3">Berneck na Feira 2026</h1>
         <div className="w-full rounded-lg p-3 overflow-hidden">
           <Image
-            src="/banner.jpg"
+            src="/banner_new.jpg"
             alt="Banner Expo Horizontes Berneck"
             width={1200}
             height={400}

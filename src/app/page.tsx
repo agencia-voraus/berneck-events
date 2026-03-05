@@ -20,7 +20,7 @@ const Menu = () => {
     <div className="min-h-screen flex flex-col">
       <div className="w-full max-h-[600px] overflow-hidden flex justify-center items-center">
         <Image
-          src="/banner.jpg"
+          src="/banner_new.jpg"
           alt="Banner Expo Revestir 2026"
           width={1200}
           height={800}

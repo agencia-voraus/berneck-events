@@ -92,7 +92,7 @@ function BrindeContent() {
       <div className="min-h-screen flex flex-col items-center bg-gray-100">
         <div className="w-full max-h-[600px] overflow-hidden flex justify-center items-center bg-gray-100">
           <Image
-            src="/banner.jpg"
+            src="/banner_new.jpg"
             alt="Banner Expo Revestir 2026"
             width={1200}
             height={800}

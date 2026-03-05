@@ -62,7 +62,7 @@ export default function Confirmation() {
     <>
       <div className="w-full">
         <Image
-          src="/banner.jpg"
+          src="/banner_new.jpg"
           alt="Banner Expo Revestir 2026"
           width={1200}
           height={300}

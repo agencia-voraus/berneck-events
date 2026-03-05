@@ -138,7 +138,7 @@ function GiftContent() {
     <>
       <div className="w-full">
       <Image
-          src="/banner.jpg"
+          src="/banner_new.jpg"
           alt="Banner Expo Revestir 2026"
           layout="responsive"
           width={1920}
