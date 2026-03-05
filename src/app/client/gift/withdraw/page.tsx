@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGift, faHome, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faGift, faHome } from '@fortawesome/free-solid-svg-icons';
 import { Footer } from "@/components/Footer";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
