@@ -10,7 +10,8 @@
     "migrate": "prisma migrate deploy",
     "migrate:dev": "prisma migrate dev",
     "seed": "ts-node prisma/seed.ts",
-    "import-leads": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/import-leads.ts"
+    "import-leads": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/import-leads.ts",
+    "create-admin": "ts-node prisma/create-admin.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
