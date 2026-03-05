@@ -13,8 +13,8 @@ export async function GET() {
 
     if (!giftStock) {
       return NextResponse.json(
-        { isActive: false,  message: "Nenhum estoque ativo encontrado." },
-        { status: 404 }
+        { isActive: false, message: "Nenhum estoque ativo encontrado." },
+        { status: 200 }
       );
     }
 

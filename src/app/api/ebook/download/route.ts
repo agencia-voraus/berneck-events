@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const pdfPath = path.join(process.cwd(), 'public', 'pdfs', 'E-Legado_ebook.pdf');
+    const pdfPath = path.join(process.cwd(), 'public', 'pdfs', 'Legado_ebook.pdf');
 
     if (!fs.existsSync(pdfPath)) {
       return NextResponse.json(
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse(pdfBuffer, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="E-Legado_ebook.pdf"',
+        'Content-Disposition': 'attachment; filename="Legado_ebook.pdf"',
       },
     });
   } catch (error) {

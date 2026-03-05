@@ -66,7 +66,7 @@ function BrindeContent() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'E-Legado_ebook.pdf';
+        a.download = 'Legado_ebook.pdf';
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
