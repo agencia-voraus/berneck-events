@@ -11,7 +11,7 @@ export default function ThankYou() {
         <Image src="/logo.png" alt="Logo da empresa" width={200} height={50} priority />
       </div>  
       <p className="mt-4 text-2xl sm:text-3xl md:text-4xl text-border-primary">
-        Obrigado por nos <br /> visitar na Expo <br /> Revestir 2025
+        Obrigado por nos <br /> visitar na Expo <br /> Revestir 2026
       </p>
       
       <p className="mt-5 font-bold text-lg sm:text-xl border-t border-gray-300 pt-2">

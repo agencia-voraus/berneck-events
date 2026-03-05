@@ -35,9 +35,26 @@ function FormContent() {
         .then((data) => {
           handleChangePhone(data.phone || "");
 
+          const profissoes = [
+            "Arquiteto(a)",
+            "Designer de Interiores",
+            "Engenheiro(a) Civil",
+            "Empreendedor(a)",
+            "Marceneiro(a)",
+            "Projetista(a)",
+            "Comprador(a)",
+            "Estudante",
+            "Outros",
+          ];
+          const cargoValue = data.jobTitle
+            ? profissoes.includes(data.jobTitle)
+              ? data.jobTitle
+              : "Outros"
+            : "";
+
           setFormData({
             nome: data.fullName || "",
-            cargo: data.jobTitle || "",
+            cargo: cargoValue,
             dataNascimento: data.birthDate ? formatDate(data.birthDate) : "",
             celular: data.phone || "",
             cep: data.zipCode || "",
@@ -103,6 +120,14 @@ function FormContent() {
     }
   };
 
+  const validateDateField = (value: string) => {
+    const trimmed = value.trim();
+    if (trimmed.length === 0) return "";
+    if (trimmed.length < 10) return "Complete a data no formato dd/mm/aaaa.";
+    if (!isValidDate(trimmed)) return "Data inválida. Use o formato dd/mm/aaaa.";
+    return "";
+  };
+
   const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "");
 
@@ -116,14 +141,14 @@ function FormContent() {
     setFormData((prev) => ({ ...prev, dataNascimento: value }));
 
     if (value.length === 10) {
-      if (!isValidDate(value)) {
-        setDateError("Data inválida. Use o formato dd/mm/aaaa.");
-      } else {
-        setDateError("");
-      }
+      setDateError(validateDateField(value));
     } else {
       setDateError("");
     }
+  };
+
+  const handleBlurDate = () => {
+    setDateError(validateDateField(formData.dataNascimento));
   };
 
   const isValidDate = (dateStr: string) => {
@@ -253,23 +278,45 @@ function FormContent() {
               onChange={handleChange}
               required
             />
-            <InputCustom
-              label="Profissão"
-              type="text"
-              name="cargo"
-              value={formData.cargo}
-              placeholder="Profissão"
-              onChange={handleChange}
-              required
-            />
+            <div className="flex flex-col w-full max-w-md">
+              <label className="text-2xl font-semibold text-gray-700 mb-2 text-border-primary">
+                Profissão
+              </label>
+              <select
+                name="cargo"
+                value={formData.cargo}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg bg-gray-100 text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 mt-1"
+                required
+              >
+                <option value="">Selecione</option>
+                {[
+                  "Arquiteto(a)",
+                  "Designer de Interiores",
+                  "Engenheiro(a) Civil",
+                  "Empreendedor(a)",
+                  "Marceneiro(a)",
+                  "Projetista(a)",
+                  "Comprador(a)",
+                  "Estudante",
+                  "Outros",
+                ].map((profissao) => (
+                  <option key={profissao} value={profissao}>
+                    {profissao}
+                  </option>
+                ))}
+              </select>
+            </div>
             <InputCustom
               label="Data de nascimento"
               type="text"
               name="dataNascimento"
               value={formData.dataNascimento}
               onChange={handleChangeDate}
+              onBlur={handleBlurDate}
               placeholder="dd/mm/aaaa"
               required
+              error={!!dateError}
             />
             {dateError && (
               <p className="text-red-500 text-sm mt-1">{dateError}</p>

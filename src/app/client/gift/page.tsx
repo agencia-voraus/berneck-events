@@ -66,7 +66,7 @@ function BrindeContent() {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'E-Book_Revestir_BERNECK_2025.pdf';
+        a.download = 'E-Book_Revestir_BERNECK_2026.pdf';
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -93,7 +93,7 @@ function BrindeContent() {
         <div className="w-full max-h-[600px] overflow-hidden flex justify-center items-center bg-gray-100">
           <Image
             src="/banner.jpg"
-            alt="Banner Expo Revestir 2025"
+            alt="Banner Expo Revestir 2026"
             width={1200}
             height={800}
             className="w-full h-full object-contain"
@@ -102,7 +102,7 @@ function BrindeContent() {
   
         <div className="flex flex-col items-center mt-6 px-4 text-center">
             <h1 className="text-2xl sm:text-3xl md:text-4xl text-border-primary font-semibold">
-              Berneck na Expo Revestir 2025
+              Berneck na Expo Revestir 2026
             </h1>
 
             {gift && gift.isPhysical ? (

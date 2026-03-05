@@ -21,7 +21,7 @@ const Menu = () => {
       <div className="w-full max-h-[600px] overflow-hidden flex justify-center items-center">
         <Image
           src="/banner.jpg"
-          alt="Banner Expo Revestir 2025"
+          alt="Banner Expo Revestir 2026"
           width={1200}
           height={800}
           className="w-full h-full object-contain"
