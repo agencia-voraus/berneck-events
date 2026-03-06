@@ -58,27 +58,16 @@ function BrindeContent() {
     }
   }, [leadId]);
 
-  const handleDownloadEbook = async () => {
-    try {
-      const response = await fetch(`/api/ebook/download?leadId=${leadId}`);
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Legado_ebook.pdf';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-        setEbookDownloaded(true); 
-        router.push("/client/thank-you"); 
-      } else {
-        console.error("Erro ao baixar o eBook:", await response.text());
-      }
-    } catch (error) {
-      console.error("Erro ao tentar baixar o eBook:", error);
-    }
+  const handleDownloadEbook = () => {
+    const a = document.createElement("a");
+    a.href = `/api/ebook/download?leadId=${leadId}`;
+    a.download = "Legado_ebook.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    setEbookDownloaded(true);
+    router.push("/client/thank-you");
   };
 
   if (loading) {
@@ -97,6 +86,8 @@ function BrindeContent() {
             width={1200}
             height={800}
             className="w-full h-full object-contain"
+            priority
+            sizes="100vw"
           />
         </div>
   

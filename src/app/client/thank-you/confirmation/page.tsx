@@ -67,6 +67,8 @@ export default function Confirmation() {
           width={1200}
           height={300}
           className="w-full object-cover max-h-60"
+          priority
+          sizes="100vw"
         />
       </div>
 

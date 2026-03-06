@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import fs from 'fs';
 import path from 'path';
+import { Readable } from 'stream';
 
 const prisma = new PrismaClient();
 
@@ -34,20 +35,25 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const pdfBuffer = fs.readFileSync(pdfPath);
+    const stat = fs.statSync(pdfPath);
 
     await prisma.gift.update({
-      where: { id: gift.id }, 
+      where: { id: gift.id },
       data: {
         hasClaimed: true,
         claimedAt: new Date(),
       },
     });
 
-    return new NextResponse(pdfBuffer, {
+    const nodeStream = fs.createReadStream(pdfPath);
+    const webStream = Readable.toWeb(nodeStream) as ReadableStream;
+
+    return new NextResponse(webStream, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': 'attachment; filename="Legado_ebook.pdf"',
+        'Content-Length': String(stat.size),
+        'Cache-Control': 'no-store',
       },
     });
   } catch (error) {
